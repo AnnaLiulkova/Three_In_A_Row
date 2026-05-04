@@ -1,6 +1,5 @@
-using UnityEngine;
 using TMPro;
-
+using UnityEngine;
 
 public class ScoreService : MonoBehaviour
 {
@@ -17,5 +16,15 @@ public class ScoreService : MonoBehaviour
     {
         _score += score;
         _scoreText.text = _score.ToString();
+        
+        if (GameManager.Instance != null) GameManager.Instance.OnScoreUpdated(_score);
     }
+
+    public void ResetScore()
+    {
+        _score = 0;
+        _scoreText.text = "0";
+    }
+
+    public int GetCurrentScore() => _score;
 }

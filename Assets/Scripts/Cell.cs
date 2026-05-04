@@ -12,12 +12,13 @@ public class Cell : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private CellMover _cellMover;
     [SerializeField] private float _moveSpeed = 10f;
     private Vector2 _position;
-    
-    // ВИПРАВЛЕНО: _isUpdating (була опечатка)
     private bool _isUpdating; 
 
     public Point Point => _cellData.point;
     public CellData.CellType CellType => _cellData.cellType;
+
+    public CellData.BonusType BonusType => _cellData.bonusType;
+    public bool arrowIsHorizontal => _cellData.arrowIsHorizontal;
     
     public void Initialize(CellData cellData, Sprite sprite, CellMover cellMover)
     {
@@ -26,6 +27,16 @@ public class Cell : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         _cellMover = cellMover;
         UpdataName();
         ResetPosition(); 
+    }
+
+    public void SetBonus(CellData.BonusType type, Sprite sprite, bool isHorizontal)
+    {
+        _cellData.bonusType = type;
+        _cellData.arrowIsHorizontal = isHorizontal;
+        if (sprite != null)
+        {
+            _image.sprite = sprite;
+        }
     }
 
     public bool UpdateCell()
@@ -60,6 +71,7 @@ public class Cell : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         rect.anchoredPosition = Vector2.Lerp(rect.anchoredPosition, position, Time.deltaTime * _moveSpeed);
     }
+    
     public void ResetPosition()
     {
         _position = BoardService.GetBoardPositionFromPoint(Point);

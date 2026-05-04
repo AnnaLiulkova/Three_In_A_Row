@@ -58,14 +58,16 @@ public class CellMover
 
     public void DropCell()
     {
-        if (_movingCell == null)
-            return;
+        if (_movingCell == null) return;
 
         if (_newPoint.Equals(_movingCell.Point))
             _boardService.ResetCell(_movingCell);
         else
+        {
             _boardService.FlipCells(_movingCell.Point, _newPoint, true);
-
+            
+            if (GameManager.Instance != null) GameManager.Instance.OnMoveMade();
+        }
         _movingCell = null;
     }
 }
